@@ -1,0 +1,11 @@
+.git
+.vs
+.vscode
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/dist-ssr
+.env
+.env.*
+!.env.example

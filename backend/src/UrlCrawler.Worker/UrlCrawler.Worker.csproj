@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-UrlCrawler.Worker-3e64478c-33a2-4688-b9bd-6ff331e40611</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="1.10.1" />
+    <ProjectReference Include="..\UrlCrawler.Domain\UrlCrawler.Domain.csproj" />
+    <ProjectReference Include="..\UrlCrawler.Infrastructure\UrlCrawler.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
