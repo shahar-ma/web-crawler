@@ -39,6 +39,8 @@ The public-host check is defense in depth, not a complete network sandbox; produ
 
 ## Develop, test, and inspect backend coverage (PowerShell)
 
+The backend targets .NET 8. CI installs both the .NET 8 runtime and .NET 10 SDK: the test projects use xUnit v3/Microsoft.Testing.Platform, and the repository-level `global.json` opts `dotnet test` into the .NET 10 MTP runner.
+
 ```powershell
 dotnet build .\backend\UrlCrawler.sln --configuration Release
 dotnet test .\backend\UrlCrawler.sln --configuration Release --no-build
