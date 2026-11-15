@@ -26,7 +26,7 @@ public sealed class CrawlJob
     public DateTimeOffset? StartedAt { get; set; }
     public DateTimeOffset? CompletedAt { get; set; }
     public string? FailureReason { get; set; }
-    public ICollection<CrawledPage> Pages { get; set; } = new List<CrawledPage>();
+    public ICollection<CrawledPage> Pages { get; set; } = [];
 }
 
 public sealed class CrawledPage
@@ -43,7 +43,7 @@ public sealed class CrawledPage
     public int InternalLinks { get; set; }
     public double DomainLinkRatio => TotalLinks == 0 ? 0 : (double)InternalLinks / TotalLinks;
     public DateTimeOffset CrawledAt { get; set; } = DateTimeOffset.UtcNow;
-    public ICollection<CrawledLink> Links { get; set; } = new List<CrawledLink>();
+    public ICollection<CrawledLink> Links { get; set; } = [];
 }
 
 public sealed class CrawledLink

@@ -7,12 +7,12 @@ namespace UrlCrawler.Api;
 
 internal static class ApiEndpoints
 {
-    public static void Map(WebApplication app)
+    public static void Map(this WebApplication app)
     {
         app.MapGet("/api/jobs", (int? page, int? pageSize, CrawlerDbContext db, CancellationToken ct) =>
             ListJobsAsync(page, pageSize, db, ct)).WithName("ListJobs");
         app.MapPost("/api/jobs", (CreateJobRequest request, CrawlerDbContext db, CancellationToken ct) =>
-            CreateJobAsync(request, db, ct)).WithName("CreateJob");
+            CreateJobAsync(request, db, ct)).WithName("CreateJob").RequireRateLimiting("create-job");
         app.MapGet("/api/jobs/{id:guid}", (Guid id, CrawlerDbContext db, CancellationToken ct) =>
             GetJobAsync(id, db, ct)).WithName("GetJob");
         app.MapGet("/api/jobs/{jobId:guid}/pages/{pageId:guid}/links",

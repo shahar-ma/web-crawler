@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System.Text.Json.Serialization;
 using UrlCrawler.Api;
@@ -10,26 +11,46 @@ var connectionString = builder.Configuration.GetConnectionString("CrawlerDb")
 builder.Services.AddCrawlerInfrastructure(connectionString);
 builder.Services.AddOutboxDispatcher();
 builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>("sql-server", HealthStatus.Unhealthy);
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
-    policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod()));
-
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(_ =>
+{
+    _.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo
+    {
+        Version = "v1",
+        Title = "UrlCrawler.Api",
+    });
+});
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+builder.Services.AddCors(cors => cors.AddDefaultPolicy(policy =>
+    policy.WithOrigins(allowedOrigins).AllowAnyHeader().WithMethods("GET", "POST")));
+builder.Services.AddRateLimiter(limiter =>
+{
+    limiter.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    limiter.AddFixedWindowLimiter("create-job", o =>
+        {
+            o.PermitLimit = 10;
+            o.Window = TimeSpan.FromMinutes(1);
+        });
+});
 var app = builder.Build();
 
 await InitializeDatabaseAsync(app);
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Configuration.GetValue<bool>("Swagger:Enabled"))
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI( _ =>
+    {
+        _.SwaggerEndpoint("/swagger/v1/swagger.json", "UrlCrawler.Api V1");
+    });
 }
 
 app.UseCors();
-app.MapHealthChecks("/health");
-ApiEndpoints.Map(app);
+app.UseRateLimiter();
+app.MapHealthChecks("/health").DisableRateLimiting();
+app.Map();
 
 app.Run();
 
@@ -53,4 +74,4 @@ static async Task InitializeDatabaseAsync(WebApplication app)
     }
 }
 
-public partial class Program { }
+public partial class Program;

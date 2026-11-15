@@ -4,8 +4,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using System.Text;
-using System.Text.Json;
-using UrlCrawler.Domain;
 
 namespace UrlCrawler.Infrastructure;
 
