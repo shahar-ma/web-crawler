@@ -14,7 +14,7 @@ docker compose up --build
 
 Open the dashboard at <http://localhost:3000>. The API and Swagger UI are available at <http://localhost:5080> and <http://localhost:5080/swagger>; RabbitMQ management is at <http://localhost:15672> (user `crawler`, with the password supplied above).
 
-Use the same passwords on subsequent starts while retaining the named SQL Server and RabbitMQ volumes. The RabbitMQ password is embedded in an AMQP URI, so enter URL-safe characters. Compose passes these credentials to containers; they are not committed to the repository. Use a secret manager for production, and do not expose this Compose stack to an untrusted network. Stop the containers with `Ctrl+C`; run `docker compose down` to stop them. Named SQL Server and RabbitMQ volumes keep data between starts.
+Use the same passwords on subsequent starts while retaining the named SQL Server and RabbitMQ volumes. The RabbitMQ password is embedded in an AMQP URI, so enter URL-safe characters. Compose passes these credentials to containers; they are not committed to the repository. Use a secret manager for production, and do not expose this Compose stack to an untrusted network. Ctrl+C stops the stack, docker compose down removes the containers, and the volumes are kept unless you add -v. Named SQL Server and RabbitMQ volumes keep data between starts.
 
 
 ## Architecture
