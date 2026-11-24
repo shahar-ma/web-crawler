@@ -1,4 +1,4 @@
-# URLScout — job-based web crawler
+# UrlCrawler — job-based web crawler
 
 URLScout is a small full-stack crawler demo: submit a public URL, follow its same-origin links to a bounded depth, and inspect crawl progress, page results, and domain-link ratios.
 
@@ -21,10 +21,10 @@ Use the same passwords on subsequent starts while retaining the named SQL Server
 
 ```mermaid
 flowchart LR
-  UI[React + Vite / nginx] -->|REST| API[ASP.NET Core 8 API]
+  UI[React + Vite / nginx] -->|REST| API[ASP.NET Core 10 API]
   API -->|job + outbox transaction| SQL[(SQL Server)]
   SQL -->|outbox dispatcher| MQ{{RabbitMQ}}
-  MQ --> Worker[.NET 8 crawl worker]
+  MQ --> Worker[.NET 10 crawl worker]
   Worker -->|pages and links| SQL
 ```
 
