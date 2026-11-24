@@ -51,7 +51,7 @@ npm.cmd run lint
 npm.cmd run build
 ```
 
-The coverage command writes a Coverlet Cobertura report under `backend/tests/UrlCrawler.Tests/TestResults`. In the latest run on 2026-11-09, all 76 backend tests passed; total line/branch coverage was **94.8% / 95.1%**. By project: API **94.0% / 96.7%**, Domain **99.0% / 94.4%**, Infrastructure **96.6% / 91.7%**, and Worker **93.1% / 96.1%**. `CrawlProcessor.cs` now has **100% line and branch coverage**. The build does not enforce 100% coverage; remaining gaps are in other worker code, API database startup retry/health-check exceptions, and outbox reconnect/confirm failures. See `backend/README.md` and the component READMEs for per-project guidance.
+The coverage command writes a Coverlet Cobertura report under `backend/tests/UrlCrawler.Tests/TestResults`. In the latest run all 76 backend tests passed; total line/branch coverage was **94.8% / 95.1%**. By project: API **94.0% / 96.7%**, Domain **99.0% / 94.4%**, Infrastructure **96.6% / 91.7%**, and Worker **93.1% / 96.1%**. `CrawlProcessor.cs` now has **100% line and branch coverage**. The build does not enforce 100% coverage; remaining gaps are in other worker code, API database startup retry/health-check exceptions, and outbox reconnect/confirm failures. See `backend/README.md` and the component READMEs for per-project guidance.
 
 The frontend has lint and production-build checks but no unit-test or coverage script configured. For frontend hot reload, start the API and worker in separate terminals, then run `npm.cmd run dev` from `frontend`; Vite proxies `/api` and `/health` to `http://localhost:5080`. Add a frontend test/coverage runner if UI coverage is required.
 
